@@ -47,6 +47,9 @@ class Dungeon():
     #eu acho que na funcao check rooms fillet ela nao ta vendo as salas direito, ou ta pegando sempre so a primeira sala.
     #TODO: Tendo umas divisoes por zero tambem
     #TODO: Ideia é refazer essa parte toda
+
+    #TODO: richard suggestion: preencher cada room e sortear se vai ter uma room depois
+    #
     def build_dungeon(self, depth=0, max_depth=11):
         dgg = nx.DiGraph()
         dgg.add_node("ROOM")
