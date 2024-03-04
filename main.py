@@ -34,7 +34,6 @@ class Dungeon():
         nx.draw(graph, with_labels=True)
         plt.show()
         self.check_rooms_filled(graph=graph)
-
     def check_rooms_filled(self, graph):
         for node in graph.nodes():
             if "ROOM" in node:
@@ -52,36 +51,42 @@ class Dungeon():
         dgg = nx.DiGraph()
         dgg.add_node("ROOM")
         dgg = self._build_dungeon_recursive(dgg, "ROOM")
-        end, node = self.check_rooms_filled(dgg)
-        while not end:
-            dgg = self._build_dungeon_recursive(dgg, node)
-            end, node = self.check_rooms_filled(dgg)
-            depth += 1
-            if depth >= max_depth: break
-
         self.draw_graph(dgg)
 
-    def _build_dungeon_recursive(self, graph, current_node, depth=0, max_depth=3): 
+    def _build_dungeon_recursive(self, graph, current_node, depth=0, max_depth=150): 
         if depth >= max_depth: return graph
         # Get next production
-        check_node = current_node.split("_")[0]
-        new_node = self.get_symbol(nonterminal=check_node)
-    
-        if new_node in graph.nodes():
-            #print(self.productions["ROOM_p"])
-            index = self.productions[check_node].index(new_node)
-            self.adjust_prob(symbol=check_node, index=index)
-            new_node_id = f"{new_node}_{len(graph.nodes())}"
-            #print(self.productions["ROOM_p"])
-        else:
-            new_node_id = new_node
 
-        # create a new node and recurse if not a terminal
+        check_node = current_node.split("_")[0]
+        # max_num_branches = 3 if check_node == "ROOM" else 1
+        max_num_branches = 1
+
+        has_encounter = False
+
+        for _ in range(max_num_branches):
+            if has_encounter:
+                break
+
+            new_node = self.get_symbol(nonterminal=check_node)
+
+            if new_node == "ENCOUNTER":
+                has_encounter = True
         
-        graph.add_node(new_node_id)
-        graph.add_edge(current_node, new_node_id)
-        if new_node_id.split("_")[0] in self.productions:
-            self._build_dungeon_recursive(graph, new_node_id, depth+1, max_depth)
+            if new_node in graph.nodes():
+                print(self.productions["ROOM_p"])
+                index = self.productions[check_node].index(new_node)
+                self.adjust_prob(symbol=check_node, index=index)
+                new_node_id = f"{new_node}_{len(graph.nodes())}"
+                print(self.productions["ROOM_p"])
+            else:
+                new_node_id = new_node
+
+            # create a new node and recurse if not a terminal
+            
+            graph.add_node(new_node_id)
+            graph.add_edge(current_node, new_node_id)
+            if new_node_id.split("_")[0] in self.productions:
+                self._build_dungeon_recursive(graph, new_node_id, depth+1, max_depth)
         return graph          
 
     def adjust_prob(self, symbol:str, index:int):
