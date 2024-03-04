@@ -1,0 +1,40 @@
+{
+    "ROOM":   ["ENCOUNTER","ROOM"],
+    "ROOM_p": [0.1        ,0.9],
+    "ROOM_d": [0.05       ,0.25],
+    
+    "ENCOUNTER":   ["LORE","USABLE","CARRYABLE","ENEMY","This room is empty.","EXIT"],    
+    "ENCOUNTER_p": [0.05  ,0.05    ,0          ,0      ,0                    , 0.9],    
+    "ENCOUNTER_d": [0.05  ,0.05    ,0.05       ,0.15   ,0.05                 , 1],    
+
+    "LORE":  ["Some very lore text here"],
+    "LORE_p":[1], 
+    "LORE_d":[0],
+
+    "USABLE":   ["+hp","-hp","invisible","super_strenght","blind","death","trash"],
+    "USABLE_p": [0.16 ,0.16 ,0.16       ,0.16            ,0.16   ,0.04   ,0.16   ],
+    "USABLE_d": [0.05 ,0.05 ,0.05       ,0.05            ,0.05   ,0.5    ,0.05   ],
+
+    "CARRYABLE":   ["WEAPON","KEY_ITEM"],
+    "CARRYABLE_p": [0.6     ,0.4],
+    "CARRYABLE_d": [0.1     ,0.05],
+
+    "WEAPON":   ["sword","crossbow with 1 arrows","staff"],
+    "WEAPON_p": [0.3333 ,0.3333                  ,0.3333],
+    "WEAPON_d": [0.15   ,0.15                    ,0.15],
+
+
+    "KEY_ITEM":   ["orb","key"],
+    "KEY_ITEM_p": [0.5  ,0.5],
+    "KEY_ITEM_q": [0.05 ,0.05],
+    
+    "LOCKS": ["FREE","FREE","WALL","KEY_DOOR","ORB_PORTAL","PORTAL_STATUE"],
+    "LOCKS_DESC": ["There is a wooden door that doesn't seem to have any locks.", 
+    "There is a blueish portal, seems like you could go through it?",
+    "There is a wall that seems to be weak. Maybe it could be broken if you were stronger?",
+    "There metal door, it seems to be strong. But you could open it if you had a key.",
+    "There is an empty space of what seemed to be a door that leads to the wall. There is hole beside it, on the wall. Maybe an orb would fit there.",
+    "There is a blueish portal, but two stone statues of a very old mage-like person seem to guard it."]
+
+
+}
