@@ -5,9 +5,9 @@
     "ROOM_n": [0        ],
     
     "ENCOUNTER":   ["LORE","USABLE","CARRYABLE","ENEMY","TRAP","EMPTY","EXIT"],    
-    "ENCOUNTER_p": [0.1   ,0       ,0          ,0      ,0     ,0                , 0.9],    
-    "ENCOUNTER_d": [0.05  ,0.5     ,0.5        ,0.8   ,0.8    ,0.8              , 1],    
-    "ENCOUNTER_n": [0     ,0       ,0          ,0      ,0     ,0                , 0],  
+    "ENCOUNTER_p": [0.05  ,0       ,0          ,0.05   ,0     ,0      , 0.9  ],   
+    "ENCOUNTER_d": [0.05  ,0.8     ,0.8        ,0.6    ,0.8   ,0.8    , 1    ],   
+    "ENCOUNTER_n": [0     ,0       ,0          ,0      ,0     ,0      , 0    ], 
 
     "auto_trigger":["ENEMY", "TRAP", "EMPTY"],
     "interact_trigger":["LORE", "USABLE","CARRYABLE", "EXIT"],
@@ -42,10 +42,16 @@
     "KEY_ITEM_d": [0.05 ,0.05],
     "KEY_ITEM_n": [0    ,0],
 
+    "EXIT":   ["WEAK_WALL","KEY_DOOR","ORB_PORTAL","STATUE_PORTAL"],
+    "EXIT_p": [0.25       ,0.25      ,0.25        ,0.25],
+    "EXIT_d": [0          ,0         ,0           ,0],
+    "EXIT_n": [0          ,0         ,0           ,0],
+
+
     "CONNECTIONS":   ["DOOR" ,"PORTAL","WEAK_WALL","KEY_DOOR","ORB_PORTAL","STATUE_PORTAL"],
     "CONNECTIONS_c": ["brown","blue"  ,"gray"     ,"yellow"  ,"orange"    ,"black"],
     "CONNECTIONS_p": [0.3   ,0.3     ,0.1        ,0.1       ,0.1         ,0.1],
-    "CONNECTIONS_d": [0.5   ,0.5     ,0.1        ,0.1       ,0.1         ,0.1],
+    "CONNECTIONS_d": [0.5   ,0.5     ,0.8        ,0.8       ,0.8         ,0.8],
 
     "CONNECTIONS_DESC": ["There is a wooden door that doesn't seem to have any locks.", 
     "There is a blueish portal, seems like you could go through it?",

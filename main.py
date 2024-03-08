@@ -24,7 +24,7 @@ class Dungeon():
 
     def __init__(self,productions_address: str) -> None:
         self.productions = self.get_productions(archive_name=productions_address)
-        self.map = self.generate_map(interval=[5,5])
+        self.map = self.generate_map(interval=[10,15])
         self.map = self.rooms_connections(map=self.map) 
         self.dungeon = self.build_dungeon(dungeon=self.map)
         self.map_description(map=self.dungeon)
@@ -35,9 +35,37 @@ class Dungeon():
             productions = json.load(file)
         return productions
     
+    def get_edge_labels(self, graph:object):
+        legend = {}
+        target = ["CONNECTION","TRIGGER"]
+        free = ["DOOR","PORTAL"]
+        lock = ["WEAK_WALL","KEY_DOOR","ORB_PORTAL","STATUE_PORTAL"]
+        for edge, atb in graph.edges.items():
+            #Gets just the first 3 letter of the production
+            for element in target:
+                if element in atb:
+                    if atb[element] in free: legend[edge] = "FREE"
+                    elif atb[element] in lock: legend[edge] = f"{atb[element][0]}_LOCK"
+                    else:
+                        legend[edge] = f" - {atb[element][0:4]} - "
+        return legend
+    
+    def get_node_color_map(self, graph: object):
+        room_nodes = []
+        for node in graph.nodes():
+            if graph.nodes[node]["TYPE"] == "ROOM":
+                room_nodes.append("brown")
+            elif graph.nodes[node]["TYPE"] == "ENCOUNTER":
+                room_nodes.append("orange")
+            elif graph.nodes[node]["TYPE"] == "EXIT":
+                room_nodes.append("green")
+            else: room_nodes.append("blue")
+        return room_nodes
+    
     def draw_graph(self, graph: object):
         pos = nx.kamada_kawai_layout(graph)
-        nx.draw(G=graph, pos=pos, with_labels=True)
+        nx.draw(G=graph, pos=pos, with_labels=True, node_color=self.get_node_color_map(graph))
+        nx.draw_networkx_edge_labels(G=graph, pos=pos, edge_labels=self.get_edge_labels(graph))
         plt.show()
 
     def map_description(self, map: object):
@@ -50,7 +78,6 @@ class Dungeon():
                     if map.nodes[connection]["TYPE"]=="ROOM":
                         index = self.productions["CONNECTIONS"].index(map.edges[room,connection]["CONNECTION"])
                         output += (f"     {self.productions['CONNECTIONS_DESC'][index]}\n")
-                print()
         print(output)
 
     def generate_map (self, interval=[5,7]):
@@ -75,6 +102,12 @@ class Dungeon():
             self.adjust_prob(symbol="CONNECTIONS", index=index)
         return map
     
+    def type_encounter_trigger(self, graph, current_node, new_node):
+        for node in nx.all_neighbors(graph=graph,node=current_node):
+            if isinstance(node,int):
+                graph.edges[node,current_node]["TRIGGER"] = self.get_encounter_triggers(production=new_node)
+        return graph
+        
     def get_encounter_triggers (self, production:str):
         if production in self.productions["auto_trigger"]:
             return "auto"
@@ -107,7 +140,7 @@ class Dungeon():
         graph.nodes[new_node_id]["TYPE"] = new_node
         graph.add_edge(current_node, new_node_id)
         if grammar_rule == "ENCOUNTER":
-            graph.edges[current_node,new_node_id]["TRIGGER"] = self.get_encounter_triggers(production=new_node)
+            graph = self.type_encounter_trigger(graph, current_node, new_node)
         if graph.nodes[new_node_id]["TYPE"] in self.productions:
             self.build_dungeon_recursive(graph, new_node_id, depth+1, max_depth)
         return graph          
