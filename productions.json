@@ -1,38 +1,62 @@
-{
-    "ROOM":   ["ENCOUNTER","ROOM"],
-    "ROOM_p": [0.1        ,0.9],
-    "ROOM_d": [0.05       ,0.25],
+{  
+    "ROOM":   ["ENCOUNTER"],
+    "ROOM_p": [1        ],
+    "ROOM_d": [0        ],
+    "ROOM_n": [0        ],
     
-    "ENCOUNTER":   ["LORE","USABLE","CARRYABLE","ENEMY","This room is empty.","EXIT"],    
-    "ENCOUNTER_p": [0.05  ,0.05    ,0          ,0      ,0                    , 0.9],    
-    "ENCOUNTER_d": [0.05  ,0.05    ,0.05       ,0.15   ,0.05                 , 1],    
+    "ENCOUNTER":   ["LORE","USABLE","CARRYABLE","ENEMY","TRAP","EMPTY","EXIT"],    
+    "ENCOUNTER_p": [0.05  ,0       ,0          ,0.05   ,0     ,0      , 0.9  ],   
+    "ENCOUNTER_d": [0.05  ,0.8     ,0.8        ,0.6    ,0.8   ,0.8    , 1    ],   
+    "ENCOUNTER_n": [0     ,0       ,0          ,0      ,0     ,0      , 0    ], 
+
+    "auto_trigger":["ENEMY", "TRAP", "EMPTY"],
+    "interact_trigger":["LORE", "USABLE","CARRYABLE", "EXIT"],
 
     "LORE":  ["Some very lore text here"],
     "LORE_p":[1], 
     "LORE_d":[0],
+    "LORE_n":[0],
 
-    "USABLE":   ["+hp","-hp","invisible","super_strenght","blind","death","trash"],
-    "USABLE_p": [0.16 ,0.16 ,0.16       ,0.16            ,0.16   ,0.04   ,0.16   ],
-    "USABLE_d": [0.05 ,0.05 ,0.05       ,0.05            ,0.05   ,0.5    ,0.05   ],
+    "TRAP":  ["--hp","-random_potion","t_death"],
+    "TRAP_p":[0.8   ,0.15            ,0.5], 
+    "TRAP_d":[0.25  ,0.1             ,0],
+    "TRAP_n":[0     ,0               ,0],
+
+    "USABLE":   ["+hp","-hp","invisible","super_strenght","blind","u_death","trash"],
+    "USABLE_p": [0.05 ,0.17 ,0.17       ,0.17            ,0.17   ,0.17   ,0.10   ],
+    "USABLE_d": [0.5  ,0.5  ,0.5        ,0.5             ,0.5    ,0.5    ,0.5   ],
+    "USABLE_n": [0    ,0    ,0          ,0               ,0      ,0      ,0   ],
 
     "CARRYABLE":   ["WEAPON","KEY_ITEM"],
     "CARRYABLE_p": [0.6     ,0.4],
     "CARRYABLE_d": [0.1     ,0.05],
+    "CARRYABLE_n": [0       ,0],
 
     "WEAPON":   ["sword","crossbow with 1 arrows","staff"],
     "WEAPON_p": [0.3333 ,0.3333                  ,0.3333],
     "WEAPON_d": [0.15   ,0.15                    ,0.15],
-
+    "WEAPON_n": [0      ,0                       ,0],
 
     "KEY_ITEM":   ["orb","key"],
     "KEY_ITEM_p": [0.5  ,0.5],
-    "KEY_ITEM_q": [0.05 ,0.05],
-    
-    "LOCKS": ["FREE","FREE","WALL","KEY_DOOR","ORB_PORTAL","PORTAL_STATUE"],
-    "LOCKS_DESC": ["There is a wooden door that doesn't seem to have any locks.", 
+    "KEY_ITEM_d": [0.05 ,0.05],
+    "KEY_ITEM_n": [0    ,0],
+
+    "EXIT":   ["WEAK_WALL","KEY_DOOR","ORB_PORTAL","STATUE_PORTAL"],
+    "EXIT_p": [0.25       ,0.25      ,0.25        ,0.25],
+    "EXIT_d": [0          ,0         ,0           ,0],
+    "EXIT_n": [0          ,0         ,0           ,0],
+
+
+    "CONNECTIONS":   ["DOOR" ,"PORTAL","WEAK_WALL","KEY_DOOR","ORB_PORTAL","STATUE_PORTAL"],
+    "CONNECTIONS_c": ["brown","blue"  ,"gray"     ,"yellow"  ,"orange"    ,"black"],
+    "CONNECTIONS_p": [0.3   ,0.3     ,0.1        ,0.1       ,0.1         ,0.1],
+    "CONNECTIONS_d": [0.5   ,0.5     ,0.8        ,0.8       ,0.8         ,0.8],
+
+    "CONNECTIONS_DESC": ["There is a wooden door that doesn't seem to have any locks.", 
     "There is a blueish portal, seems like you could go through it?",
     "There is a wall that seems to be weak. Maybe it could be broken if you were stronger?",
-    "There metal door, it seems to be strong. But you could open it if you had a key.",
+    "There is a metal door, it seems to be strong. But you could open it if you had a key.",
     "There is an empty space of what seemed to be a door that leads to the wall. There is hole beside it, on the wall. Maybe an orb would fit there.",
     "There is a blueish portal, but two stone statues of a very old mage-like person seem to guard it."]
 
