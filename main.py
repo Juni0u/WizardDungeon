@@ -163,7 +163,7 @@ class Dungeon():
         return symbol[0]
 
 def demo():
-    myDg = Dungeon("/home/nonato/GitRepository/Grammar Studies/WizardDungeon/productions.json")
+    myDg = Dungeon("productions.json")
     print("============")
     #print(myDg.map)
     #myDg.draw_tower_map()
