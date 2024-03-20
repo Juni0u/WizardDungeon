@@ -1,0 +1,40 @@
+[
+  {"nodes": [
+      {"id": "1", "attribute1": "value1"},
+      {"id": "2", "attribute1": "value1"},
+      {"id": "3", "attribute1": "value1"},
+      {"id": "4", "attribute1": "value1"},
+      {"id": "5", "attribute1": "value1"}
+    ],
+    "edges": [
+      ["2", "1", "Edge 1"],
+      ["1", "5", "Edge 2"],
+      ["5", "4", "Edge 3"],
+      ["4", "3", "Edge 4"],
+      ["3", "2", "Edge 5"]
+    ]
+  },
+  {
+    "nodes": [
+      {"id": "1", "attribute1": "value1"},
+      {"id": "2", "attribute1": "value1"},
+      {"id": "3", "attribute1": "value1"}
+    ],
+    "edges": [
+      ["2", "1", "Edge 1"],
+      ["2", "3", "Edge 5"]
+    ]
+  },
+  {
+    "nodes": [
+      {"id": "1", "attribute1": "value1"},
+      {"id": "2", "attribute1": "value1"},
+      {"id": "3", "attribute1": "value1"}
+    ],
+    "edges": [
+      ["2", "1", "Edge 1"],
+      ["2", "3", "Edge 5"]
+    ]
+  }
+]
+

@@ -1,0 +1,82 @@
+{
+  "rule0": [
+    {
+      "left_side": {
+        "nodes": [
+          {"id": "A", "attribute1": "value1"},
+          {"id": "B", "attribute1": "value1"},
+          {"id": "C", "attribute1": "value1"}
+        ],
+        "edges": [
+          ["A", "B", "Edge 1"],
+          ["B", "C", "Edge 2"]
+        ]
+      },
+      "right_side": [
+        {
+          "nodes": [
+            {"id": "X", "attribute1": "value1"},
+            {"id": "Y", "attribute1": "value1"},
+            {"id": "Z", "attribute1": "value1"}
+          ],
+          "edges": [
+            ["X", "Y", "Edge 1"],
+            ["Y", "Z", "Edge 2"]
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "P", "attribute1": "value1"},
+            {"id": "Q", "attribute1": "value1"},
+            {"id": "R", "attribute1": "value1"}
+          ],
+          "edges": [
+            ["P", "Q", "Edge 1"],
+            ["Q", "R", "Edge 2"]
+          ]
+        }
+      ]
+    }
+  ],
+
+  "rule1":
+  [
+    {
+      "left_side": {
+        "nodes": [
+          {"id": "A", "attribute1": "value1"},
+          {"id": "B", "attribute1": "value1"},
+          {"id": "C", "attribute1": "value1"}
+        ],
+        "edges": [
+          ["A", "B", "Edge 1"],
+          ["B", "C", "Edge 2"]
+        ]
+      },
+      "right_side": [
+        {
+          "nodes": [
+            {"id": "X", "attribute1": "value1"},
+            {"id": "Y", "attribute1": "value1"},
+            {"id": "Z", "attribute1": "value1"}
+          ],
+          "edges": [
+            ["X", "Y", "Edge 1"],
+            ["Y", "Z", "Edge 2"]
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "P", "attribute1": "value1"},
+            {"id": "Q", "attribute1": "value1"},
+            {"id": "R", "attribute1": "value1"}
+          ],
+          "edges": [
+            ["P", "Q", "Edge 1"],
+            ["Q", "R", "Edge 2"]
+          ]
+        }
+      ]
+    }
+  ]
+}
