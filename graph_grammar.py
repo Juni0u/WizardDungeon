@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import networkx as nx
 import json
 
@@ -18,14 +19,31 @@ class GraphGrammar():
         self.file_name = file_name
         self.left_side = []
         self.right_side = [] 
+        
+    def draw_graph(self, graph: object):
+        pos = nx.kamada_kawai_layout(graph)
+        nx.draw(G=graph, pos=pos, with_labels=True)
+        plt.show()        
     
     def create_graph(self, graph_data:dict):
         graph = nx.Graph()
-        for #TODO: Terminar funcao pra criar os grafos.
+        for node in graph_data["nodes"]:
+            node_attributes = {}
+            for key, value in node.items():
+                if key != "id":
+                    node_attributes[key] = value                   
+            graph.add_node(node["id"], **node_attributes)
+
+        for edge in graph_data["edges"]:
+            edge_attributes = {}
+            for key, value in edge.items():
+                if (key != "source") and (key != "target"):
+                    edge_attributes[key] = value  
+            graph.add_edge(edge["source"],edge["target"], **edge_attributes)
         return graph
     
     def read_rules(self):
-  
+        
         with open (self.file_name, "r") as json_file:
             data = json.load(json_file)
  
@@ -36,18 +54,15 @@ class GraphGrammar():
                 for i,r_data in enumerate(data["right_side"]):
                     current_right_side.append(self.create_graph(graph_data=r_data))
                 self.right_side.append(current_right_side)
-            
-        for index in range(len(self.left_side)):
-            print(f"rule{index}")
-            print(f"left: {self.left_side[index]}")
-            for index2 in range(len(self.right_side[index])):
-                print(f"right{index2}: {self.right_side[index][index2]}")
-            print()
-
-                
         
-            
-        
+        a=1
+        if a==1:    
+            for index in range(len(self.left_side)):
+                print(f"rule{index}")
+                print(f"left: {self.left_side[index]}")
+                for index2 in range(len(self.right_side[index])):
+                    print(f"right{index2}: {self.right_side[index][index2]}")
+                print()             
     
     def find_subgraph(self):
         pass
