@@ -1,32 +1,25 @@
+from rules import Rule
 import matplotlib.pyplot as plt
 import networkx as nx
 import json
+import random as rd
 
 class GraphGrammar():
     
     def __init__(self,file_name:str) -> None:
-        """The idea is that to each element in [left_side] theres an element in [right_side]
-        It is possible that one element in [left_side] can be mapped to more than more element in [right_side]
-        Each element in [right_side] must have an equivalent probability written in [right_probs].
-        
-        ex >>>
-        ----left side-----|--------right side--------|-------right side probs-------|
-            [G1,G2]         [[Ga,Gb],[Gc,Gd,Ge]]       [[0.5,0.5],[0.6,0.2,0.2]]
-            
-        G1 may substituted for Ga or Gb, where each have an 0.5 probability of happening.        
-        #TODO: Isso provavelmente sera adaptado pq e melhor ler isso de um arquivo, mas eu tenho que ver como eu leio grafos de um arquivo.
-        """
         self.file_name = file_name
+        self.rules = []
         self.left_side = []
         self.right_side = [] 
+        self.read_rules()
         
     def draw_graph(self, graph: object):
         pos = nx.kamada_kawai_layout(graph)
-        nx.draw(G=graph, pos=pos, with_labels=True)
+        nx.draw(G=graph, pos=pos, with_labels=True, node_color="red", node_size=500)
         plt.show()        
     
     def create_graph(self, graph_data:dict):
-        graph = nx.Graph()
+        graph = nx.DiGraph()
         for node in graph_data["nodes"]:
             node_attributes = {}
             for key, value in node.items():
@@ -43,7 +36,6 @@ class GraphGrammar():
         return graph
     
     def read_rules(self):
-        
         with open (self.file_name, "r") as json_file:
             data = json.load(json_file)
  
@@ -53,9 +45,12 @@ class GraphGrammar():
                 self.left_side.append(self.create_graph(graph_data=data["left_side"]))
                 for i,r_data in enumerate(data["right_side"]):
                     current_right_side.append(self.create_graph(graph_data=r_data))
+                
+                self.rules.append(Rule(left_side=self.create_graph(graph_data=data["left_side"]),
+                                    right_side=current_right_side))
                 self.right_side.append(current_right_side)
         
-        a=1
+        a=0
         if a==1:    
             for index in range(len(self.left_side)):
                 print(f"rule{index}")
@@ -64,17 +59,48 @@ class GraphGrammar():
                     print(f"right{index2}: {self.right_side[index][index2]}")
                 print()             
     
-    def find_subgraph(self):
-        pass
+    def apply_rule(self, node, graph:nx.DiGraph, rule:Rule):
+        """Given a graph and a rule, apply the rule to a node"""
+        if not rule.rule_correspondence: 
+            return graph #No rule correspondence, returns the same graph
+        mod_graph = graph.copy()
+        #TODO: Tenho que identificar se a regra ta no grafo e aplicar a transformacao
+        
+        
+        
+        return mod_graph
         
 
-def demo():
-    myGr = GraphGrammar(file_name="graph_productions.json")
-    myGr.read_rules()
-    print("============")
+def exemple_graph(opt,node_number=0):
+    if opt=="i": #first node to start rooms
+        G = nx.DiGraph()
+        G.add_node("EN", type="room")
+        """G.add_node("R:1", type="room")
+        G.add_node("R:2", type="room")
+        G.add_node("R:3", type="room")
+        G.add_edge("EN","R:1", type="connection", status="free")
+        G.add_edge("EN","R:2", type="connection", status="free")
+        G.add_edge("EN","R:3", type="connection", status="free")"""
+        return G
+    else: 
+        G = nx.DiGraph()
+        max_n = rd.randint(5,10)
+        for i in range(max_n):
+            G.add_node(i)
+        return G
     
+
+def demo():
+    grammar = GraphGrammar(file_name="graph_productions.json")
+    print("============")
+    dungeon = exemple_graph(opt="i")
+    nodes = grammar.rules[1].edge_correspondence(graph=dungeon)
+    print(nodes)
+    #grammar.apply_rule(graph=
+    # dungeon, rule=grammar.) 
 
 
 
 if __name__ == "__main__":
+    
     demo()

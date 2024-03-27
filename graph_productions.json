@@ -3,36 +3,22 @@
     {
       "left_side": {
         "nodes": [
-          {"id": "1", "type": "value1"},
-          {"id": "2", "type": "value1"},
-          {"id": "3", "type": "value1"}
+          {"id": "EN", "type": "initial_room"}
         ],
-        "edges": [
-          {"source":"2", "target":"1", "type":"connection", "status":"locked"},
-          {"source":"2", "target":"3", "type":"connection", "status":"free"}
-        ]
+        "edges": []
       },
       "right_side": [
         {
           "nodes": [
-            {"id": "X", "type": "value1"},
-            {"id": "Y", "type": "value1"},
-            {"id": "Z", "type": "value1"}
+            {"id": "EN", "type": "room"},
+            {"id": "R:1", "type": "room"},
+            {"id": "R:2", "type": "room"},
+            {"id": "R:3", "type": "room"}
           ],
           "edges": [
-            {"source":"Y", "target":"X", "type":"connection", "status":"locked"},
-            {"source":"Y", "target":"Z", "type":"connection", "status":"free"}
-          ]
-        },
-        {
-          "nodes": [
-            {"id": "P", "type": "value1"},
-            {"id": "Q", "type": "value1"},
-            {"id": "R", "type": "value1"}
-          ],
-          "edges": [
-            {"source":"Q", "target":"P", "type":"connection", "status":"locked"},
-            {"source":"Q", "target":"R", "type":"connection", "status":"free"}
+            {"source":"EN", "target":"R:1", "type":"connection", "status":"free"},
+            {"source":"EN", "target":"R:2", "type":"connection", "status":"free"},
+            {"source":"EN", "target":"R:3", "type":"connection", "status":"free"}
           ]
         }
       ]
@@ -44,37 +30,39 @@
     {
       "left_side": {
         "nodes": [
-          {"id": "A", "type": "value1"},
-          {"id": "B", "type": "value1"},
-          {"id": "C", "type": "value1"}
+          {"id": "R", "type": "room"}
         ],
-        "edges": [
-          {"source":"B", "target":"A", "type":"connection", "status":"locked"},
-          {"source":"B", "target":"C", "type":"connection", "status":"free"}
-        ]
+        "edges": []
       },
       "right_side": [
+
         {
           "nodes": [
-            {"id": "X", "type": "value1"},
-            {"id": "Y", "type": "value1"},
-            {"id": "Z", "type": "value1"}
+            {"id": "R:1", "type": "room"},
+            {"id": "R:2", "type": "room"}
           ],
           "edges": [
-            {"source":"Y", "target":"X", "type":"connection", "status":"locked"},
-            {"source":"Y", "target":"Z", "type":"connection", "status":"free"}
+            {"source":"R:1", "target":"R:2", "type":"connection", "status":"free"}
           ]
         },
+
         {
           "nodes": [
-            {"id": "P", "type": "value1"},
-            {"id": "Q", "type": "value1"},
-            {"id": "R", "type": "value1"}
+            {"id": "R:1", "type": "room"},
+            {"id": "R:2", "type": "room"},
+            {"id": "R:3", "type": "room"}
           ],
           "edges": [
-            {"source":"Q", "target":"P", "type":"connection", "status":"locked"},
-            {"source":"Q", "target":"R", "type":"connection", "status":"free"}
+            {"source":"R:1", "target":"R:2", "type":"connection", "status":"free"},
+            {"source":"R:1", "target":"R:3", "type":"connection", "status":"free"}
           ]
+        },
+
+        {
+          "nodes": [
+            {"id": "R:1", "type": "room"}
+          ],
+          "edges": []          
         }
       ]
     }
