@@ -45,7 +45,8 @@ class Rule():
     def edge_correspondence(self, graph):
         """Returns TRUE if all edges from left side are present in [graph]"""
         rule_edges = self.get_left_edges()
-        if len(rule_edges)==0: return True #there are no edges in rule, so just node is needed.
+        if len(rule_edges)==0: 
+            return True #there are no edges in rule, so just node is needed.
         graph_edges = [(re.split(":",source)[0], re.split(":",target)[0]) for source, target in graph.edges()]
         for rule_edge in rule_edges:
             if rule_edge not in graph_edges:
