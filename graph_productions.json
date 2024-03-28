@@ -3,22 +3,22 @@
     {
       "left_side": {
         "nodes": [
-          {"id": "EN", "type": "initial_room"}
+            {"id": "EN:1", "type": "initial_room", "isHook":true}
         ],
         "edges": []
       },
       "right_side": [
         {
           "nodes": [
-            {"id": "EN", "type": "room"},
-            {"id": "R:1", "type": "room"},
-            {"id": "R:2", "type": "room"},
-            {"id": "R:3", "type": "room"}
+            {"id": "EN:1", "type": "room", "isHook":true},
+            {"id": "R:1", "type": "room", "isHook":false},
+            {"id": "R:2", "type": "room", "isHook":false},
+            {"id": "R:3", "type": "room", "isHook":false}
           ],
           "edges": [
-            {"source":"EN", "target":"R:1", "type":"connection", "status":"free"},
-            {"source":"EN", "target":"R:2", "type":"connection", "status":"free"},
-            {"source":"EN", "target":"R:3", "type":"connection", "status":"free"}
+            {"source":"EN:1", "target":"R:1", "type":"connection", "status":"free"},
+            {"source":"EN:1", "target":"R:2", "type":"connection", "status":"free"},
+            {"source":"EN:1", "target":"R:3", "type":"connection", "status":"free"}
           ]
         }
       ]
@@ -30,7 +30,7 @@
     {
       "left_side": {
         "nodes": [
-          {"id": "R", "type": "room"}
+          {"id": "R:1", "type": "room", "isHook":true}
         ],
         "edges": []
       },
@@ -38,8 +38,8 @@
 
         {
           "nodes": [
-            {"id": "R:1", "type": "room"},
-            {"id": "R:2", "type": "room"}
+            {"id": "R:1", "type": "room", "isHook":true},
+            {"id": "R:2", "type": "room", "isHook":false}
           ],
           "edges": [
             {"source":"R:1", "target":"R:2", "type":"connection", "status":"free"}
@@ -48,9 +48,9 @@
 
         {
           "nodes": [
-            {"id": "R:1", "type": "room"},
-            {"id": "R:2", "type": "room"},
-            {"id": "R:3", "type": "room"}
+            {"id": "R:1", "type": "room", "isHook":true},
+            {"id": "R:2", "type": "room", "isHook":false},
+            {"id": "R:3", "type": "room", "isHook":false}
           ],
           "edges": [
             {"source":"R:1", "target":"R:2", "type":"connection", "status":"free"},
@@ -60,7 +60,7 @@
 
         {
           "nodes": [
-            {"id": "R:1", "type": "room"}
+            {"id": "R:1", "type": "room", "isHook":true}
           ],
           "edges": []          
         }

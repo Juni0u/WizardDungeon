@@ -10,6 +10,11 @@ class Rule():
     def add_name(self, name):
         """Puts a name in the rule"""
         self.name = name
+        
+    def get_hook_node(self, graph):
+        for node in graph.nodes():
+            if graph.nodes[node]["isHook"]:
+                return node            
     
     def get_left_nodes(self):
         """Returns an iterator of all nodes in the left side of the rule without numbers"""
@@ -37,7 +42,8 @@ class Rule():
     def node_correspondence(self, graph):
         """Returns TRUE if all nodes from left side are present in [graph]"""
         graph_nodes = [(re.split(":",graph_node)[0]) for graph_node in graph.nodes()]
-        for rule_node in self.get_left_nodes():         
+        rule_nodes = [(re.split(":",graph_node)[0]) for graph_node in self.get_left_nodes()]
+        for rule_node in rule_nodes:         
             if rule_node not in graph_nodes:
                 return False
         return True
