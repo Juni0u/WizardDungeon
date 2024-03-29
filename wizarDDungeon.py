@@ -8,22 +8,27 @@ from datetime import datetime
 
 
 class WizarDDungeon():
-    def __init__(self, grammar_file: str, base_adress: str) -> None:
+    def __init__(self, grammar_file: str) -> None:
         self.grammar = GraphGrammar(file_name=grammar_file)
-        self.dungeon_folder = self.create_dungeon_folder(adress=base_adress)
+        self.dungeon_folder = self.create_dungeon_folder()
         self.dungeon = self.create_dungeon()  
         
-    def create_dungeon_folder(self, adress):
+    def create_dungeon_folder(self):
         time = datetime.now().strftime("%Y%m%d-%H%M%S")       
-        folder_path = adress + f"TOWER_{time}"
+        folder_name = f"TOWER_{time}"
+        folder_path = os.path.join(os.getcwd(), "TowerUniverse",folder_name)
+        img_path = os.path.join(folder_path,"imgs")
         os.makedirs(folder_path)
+        os.makedirs(img_path)
         return folder_path
         
-    def save_dg_fig(self, fig_name:int, graph:nx.DiGraph) -> None:        
+    def save_dg_fig(self, fig_name:int, graph:nx.DiGraph, path: str = "None") -> None:     
+        if path=="None":
+            path = f"{self.dungeon_folder}/imgs"           
         pos = nx.planar_layout(graph)
         plt.figure()
         nx.draw(G=graph, pos=pos, with_labels=True, node_color="red", node_size=500)
-        file_path = os.path.join(self.dungeon_folder, f"{fig_name}.png")
+        file_path = os.path.join(path, f"{fig_name}.png")
         plt.savefig(file_path) 
         
     def create_dungeon(self) -> nx.DiGraph:
@@ -31,18 +36,6 @@ class WizarDDungeon():
         graph.add_node("EN:1", type="initial_room")
         self.save_dg_fig(fig_name="initial_dungeon",graph=graph)
         return graph
-    
-    def creation_loop(self) -> nx.DiGraph:
-        #apply first rule to initial node
-        start_dungeon = self.grammar.apply_rule(target_hook="EN:1",graph=self.dungeon,rule=self.grammar.rules[0])
-        self.save_dg_fig(fig_name="iter 1",graph=start_dungeon)
-                
-        #dungeon rooms loop
-        #---apply rule 1 a number of times for all nodes in graph:
-        times = self.dice_roller(rolls=2, sides=2)
-        self.dungeon = self.dungeon_rooms_loop(iterations=times, dungeon=start_dungeon)
-        self.save_dg_fig(fig_name="final_dungeon",graph=self.dungeon)
-        return self.dungeon
     
     def dice_roller(self, rolls:int, sides:int):
         value = 0        
@@ -67,7 +60,6 @@ class WizarDDungeon():
                 if iteration > max_iterations: break
         return dungeon
 
-        
     def seek_nodes(self, graph:nx.DiGraph, node_type:str):
         """Returns a list of all nodes of that type in the graph"""
         nodes = []
@@ -75,12 +67,25 @@ class WizarDDungeon():
             if node_type in node:
                 nodes.append(node)
         return nodes
+    
+    ################################
+    ##### DUNGEON CREATION LOOP ####
+    def creation_loop(self) -> nx.DiGraph:
+        #apply first rule to initial node
+        start_dungeon = self.grammar.apply_rule(target_hook="EN:1",graph=self.dungeon,rule=self.grammar.rules[0])
+        self.save_dg_fig(fig_name="iter 1",graph=start_dungeon)
+                
+        #dungeon rooms loop
+        #---apply rule 1 a number of times for all nodes in graph:
+        times = self.dice_roller(rolls=2, sides=2)
+        self.dungeon = self.dungeon_rooms_loop(iterations=times, dungeon=start_dungeon, max_iterations=15)
+        self.save_dg_fig(fig_name="final_dungeon",graph=self.dungeon, path=self.dungeon_folder)
+        return self.dungeon
         
         
         
 
 if __name__ == "__main__":
-    dungeon = WizarDDungeon(grammar_file="graph_productions.json",
-                            base_adress="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/")
+    dungeon = WizarDDungeon(grammar_file="graph_productions.json")
     dungeon.creation_loop()
     
