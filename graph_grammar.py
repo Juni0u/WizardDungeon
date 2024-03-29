@@ -15,10 +15,11 @@ class GraphGrammar():
         self.read_rules()
         
     def draw_graph(self, graphs: list[list[str,nx.DiGraph]]):
-        for i, graph in enumerate(graphs):
-            pos = nx.kamada_kawai_layout(graph[1])
+        for _, graph in enumerate(graphs):
+            #pos = nx.kamada_kawai_layout(graph[1])
+            plt.close()
             plt.figure(graph[0])
-            nx.draw(G=graph[1], pos=pos, with_labels=True, node_color="red", node_size=500)
+            nx.draw(G=graph[1], with_labels=True, node_color="red", node_size=500)
         plt.show()        
     
     def create_graph(self, graph_data:dict):
