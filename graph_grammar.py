@@ -4,6 +4,8 @@ import networkx as nx
 import json
 import random as rd
 import re
+import os
+
 
 class GraphGrammar():
     
@@ -21,6 +23,17 @@ class GraphGrammar():
             plt.figure(graph[0])
             nx.draw(G=graph[1], with_labels=True, node_color="red", node_size=500)
         plt.show()        
+        
+    def draw_rules(self):
+        for i,rule in enumerate(self.rules):
+            fig, axs = plt.subplots(1,len(rule.right_side)+1, figsize=(10,10))
+            axs[0] = nx.draw(G=rule.left_side, with_labels=True, node_color="red", node_size=500, ax=axs[0])
+            for j,rs in enumerate(rule.right_side):
+                axs[j+1] = nx.draw(G=rs, with_labels=True, node_color="red", node_size=500, ax=axs[j+1])
+            fig.tight_layout()
+            path = os.path.join("imgs", f"rule{i}.png")
+            plt.savefig(path)
+
     
     def create_graph(self, graph_data:dict):
         graph = nx.DiGraph()
@@ -148,20 +161,8 @@ def exemple_graph(opt,node_number=0):
 
 def demo():
     grammar = GraphGrammar(file_name="graph_productions.json")
+    grammar.draw_rules()
     print("==========OUTPUT==========")
-    dungeon = exemple_graph(opt="i")
-    mod_dungeon = grammar.apply_rule("EN:1",dungeon,grammar.rules[0])
-    grammar.draw_graph([["Initial",dungeon],
-                        ["After Mod",mod_dungeon]])
-    """grammar.draw_graph([dungeon,
-                        grammar.rules[1].left_side,
-                        grammar.rules[1].right_side[0],
-                        grammar.rules[1].right_side[1],
-                        grammar.rules[1].right_side[2]])"""
-    
-
-
 
 if __name__ == "__main__":
-    
     demo()

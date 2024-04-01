@@ -72,8 +72,8 @@ class WizarDDungeon():
                 nodes.append(node)
         return nodes
     
-    def bfs(self, graph:nx.DiGraph):
-        #TODO: Use BFS to define fitness for nodes based on their lvl in the tree
+    def bfs(self, graph:nx.DiGraph) -> list[list[str]]:
+        """Does BFS in the graph and returns a list of nodes for each lvl."""
         queue = []
         next_queue = []
         lvls = []
@@ -91,13 +91,8 @@ class WizarDDungeon():
                 lvls.append(current_lvl)
                 current_lvl = []
                 next_queue = []
-                
-        for each in lvls:
-            print(each)
+        return lvls                 
             
-            
-        
-        
     ################################
     ##### DUNGEON CREATION LOOP ####
     def creation_loop(self) -> nx.DiGraph:

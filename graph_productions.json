@@ -20,6 +20,17 @@
             {"source":"EN:1", "target":"R:2", "type":"connection", "status":"free"},
             {"source":"EN:1", "target":"R:3", "type":"connection", "status":"free"}
           ]
+        },
+        {
+          "nodes": [
+            {"id": "EN:1", "type": "room", "isHook":true},
+            {"id": "R:1", "type": "room", "isHook":false},
+            {"id": "R:2", "type": "room", "isHook":false}
+          ],
+          "edges": [
+            {"source":"EN:1", "target":"R:1", "type":"connection", "status":"free"},
+            {"source":"EN:1", "target":"R:2", "type":"connection", "status":"free"}
+          ]
         }
       ]
     }
@@ -66,5 +77,146 @@
         }
       ]
     }
+  ],
+
+  "rule2": [
+    {
+      "left_side": {
+        "nodes": [
+            {"id": "EX:1", "type": "final_goal", "isHook":true}
+        ],
+        "edges": []
+      },
+      "right_side": [
+        {
+          "nodes": [
+            {"id": "EX:1", "type": "final_goal", "isHook":true},
+            {"id": "LL:1", "type": "linear_lock", "isHook":false}
+          ],
+          "edges": [
+            {"source":"LL:1", "target":"EX:1"}
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "EX:1", "type": "final_goal", "isHook":true},
+            {"id": "PL:1", "type": "paralel_lock", "isHook":false}
+          ],
+          "edges": [
+            {"source":"PL:1", "target":"EX:1"}
+          ]
+        }
+      ]
+    }
+  ],
+
+  "rule3": [
+    {
+      "left_side": {
+        "nodes": [
+            {"id": "LL", "type": "linear_lock", "isHook":true}
+        ],
+        "edges": []
+      },
+      "right_side": [
+        {
+          "nodes": [
+            {"id": "L:1", "type": "lock", "isHook":true},
+            {"id": "K:1", "type": "single_key", "isHook":false},
+            {"id": "C:1", "type": "content", "isHook":false}
+          ],
+          "edges": [
+            {"source":"C:1", "target":"K:1"},
+            {"source":"K:1", "target":"L:1"}
+          ]
+        }
+      ]
+    }
+  ],
+
+  "rule4": [
+    {
+      "left_side": {
+        "nodes": [
+            {"id": "PL", "type": "paralel_lock", "isHook":true}
+        ],
+        "edges": []
+      },
+      "right_side": [
+        {
+          "nodes": [
+            {"id": "L:1", "type": "lock", "isHook":true},
+            {"id": "K:1", "type": "multi_key", "isHook":false},
+            {"id": "K:2", "type": "multi_key", "isHook":false},
+            {"id": "C:1", "type": "content", "isHook":false},
+            {"id": "C:2", "type": "content", "isHook":false}
+          ],
+          "edges": [
+            {"source":"C:2", "target":"K:2"},
+            {"source":"K:2", "target":"L:1"},
+            {"source":"C:1", "target":"K:1"},
+            {"source":"K:1", "target":"L:1"}
+          ]
+        }
+      ]
+    }
+  ],
+
+  "rule5": [
+    {
+      "left_side": {
+        "nodes": [
+            {"id": "C", "type": "content", "isHook":true}
+        ],
+        "edges": []
+      },
+      "right_side": [
+        {
+          "nodes": [
+            {"id": "C:1", "type": "content", "isHook":true},
+            {"id": "C:2", "type": "content", "isHook":false}
+          ],
+          "edges": [
+            {"source":"C:2", "target":"C:1"}
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "C:1", "type": "content", "isHook":true},
+            {"id": "LL:1", "type": "linear_lock", "isHook":false}
+          ],
+          "edges": [
+            {"source":"LL:1", "target":"C:1"}
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "C:1", "type": "content", "isHook":true},
+            {"id": "PL:1", "type": "paralel_lock", "isHook":false}
+          ],
+          "edges": [
+            {"source":"PL:1", "target":"C:1"}
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "C:1", "type": "content", "isHook":true},
+            {"id": "T:1", "type": "content", "isHook":false}
+          ],
+          "edges": [
+            {"source":"T:1", "target":"C:1"}
+          ]
+        },
+        {
+          "nodes": [
+            {"id": "C:1", "type": "content", "isHook":true}
+          ],
+          "edges": [ ]
+        }
+      ]
+    }
   ]
+  
+
+
 }
