@@ -10,8 +10,10 @@ from datetime import datetime
 class WizarDDungeon():
     def __init__(self, grammar_file: str) -> None:
         self.grammar = GraphGrammar(file_name=grammar_file)
-        self.dungeon_folder = self.create_dungeon_folder()
-        self.dungeon = self.create_dungeon()  
+        
+    def read_dg_from_file(self,graphml_file:str) -> nx.DiGraph:
+        self.dungeon = nx.read_graphml(graphml_file)
+        return self.dungeon
         
     def create_dungeon_folder(self):
         time = datetime.now().strftime("%Y%m%d-%H%M%S")       
@@ -30,8 +32,10 @@ class WizarDDungeon():
         nx.draw(G=graph, pos=pos, with_labels=True, node_color="red", node_size=500)
         file_path = os.path.join(path, f"{fig_name}.png")
         plt.savefig(file_path) 
+        nx.write_graphml(graph, os.path.join(path,f"{fig_name}.graphml"))        
         
     def create_dungeon(self) -> nx.DiGraph:
+        self.dungeon_folder = self.create_dungeon_folder()
         graph = nx.DiGraph()
         graph.add_node("EN:1", type="initial_room")
         self.save_dg_fig(fig_name="initial_dungeon",graph=graph)
@@ -43,7 +47,7 @@ class WizarDDungeon():
             value += rd.randint(1,sides)
         return value
     
-    def dungeon_rooms_loop(self, iterations:int, dungeon:nx.DiGraph, max_iterations=10) -> nx.DiGraph:
+    def dungeon_rooms_loop(self, iterations:int, dungeon:nx.DiGraph, max_iterations=5) -> nx.DiGraph:
         """Returns the dungeon in the end of the loop."""
         iteration = 2
         last_rooms = []
@@ -68,9 +72,38 @@ class WizarDDungeon():
                 nodes.append(node)
         return nodes
     
+    def bfs(self, graph:nx.DiGraph):
+        #TODO: Use BFS to define fitness for nodes based on their lvl in the tree
+        queue = []
+        next_queue = []
+        lvls = []
+        current_lvl = []
+        
+        queue.append("EN:1")
+        while len(queue)>0:
+            current_node = queue.pop(0)
+            current_lvl.append(current_node)         
+            neighbors = list(nx.neighbors(graph,current_node))
+            next_queue.extend(neighbors)
+            
+            if len(queue)==0:
+                queue = next_queue.copy()
+                lvls.append(current_lvl)
+                current_lvl = []
+                next_queue = []
+                
+        for each in lvls:
+            print(each)
+            
+            
+        
+        
     ################################
     ##### DUNGEON CREATION LOOP ####
     def creation_loop(self) -> nx.DiGraph:
+        # creates root node
+        self.dungeon = self.create_dungeon()  
+        
         #apply first rule to initial node
         start_dungeon = self.grammar.apply_rule(target_hook="EN:1",graph=self.dungeon,rule=self.grammar.rules[0])
         self.save_dg_fig(fig_name="iter 1",graph=start_dungeon)
@@ -87,5 +120,6 @@ class WizarDDungeon():
 
 if __name__ == "__main__":
     dungeon = WizarDDungeon(grammar_file="graph_productions.json")
-    dungeon.creation_loop()
+    dungeon.read_dg_from_file(graphml_file="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/TOWER_20240401-145817/final_dungeon.graphml")
+    dungeon.bfs(dungeon.dungeon)
     
