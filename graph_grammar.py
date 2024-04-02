@@ -17,11 +17,17 @@ class GraphGrammar():
         self.read_rules()
         
     def draw_graph(self, graphs: list[list[str,nx.DiGraph]]):
+        """_summary_
+
+        Args:
+            graphs (list[list[str,nx.DiGraph]]): _[[figurename,graph]]_
+        """
         for _, graph in enumerate(graphs):
             #pos = nx.kamada_kawai_layout(graph[1])
             plt.close()
             plt.figure(graph[0])
-            nx.draw(G=graph[1], with_labels=True, node_color="red", node_size=500)
+            pos = nx.planar_layout(graph[1])
+            nx.draw(G=graph[1],pos=pos, with_labels=True, node_color="red", node_size=500)
         plt.show()        
         
     def draw_rules(self):
@@ -161,7 +167,7 @@ def exemple_graph(opt,node_number=0):
 
 def demo():
     grammar = GraphGrammar(file_name="graph_productions.json")
-    grammar.draw_rules()
+    #grammar.draw_rules()
     print("==========OUTPUT==========")
 
 if __name__ == "__main__":

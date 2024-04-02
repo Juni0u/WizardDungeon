@@ -11,9 +11,8 @@ class WizarDDungeon():
     def __init__(self, grammar_file: str) -> None:
         self.grammar = GraphGrammar(file_name=grammar_file)
         
-    def read_dg_from_file(self,graphml_file:str) -> nx.DiGraph:
-        self.dungeon = nx.read_graphml(graphml_file)
-        return self.dungeon
+    def read_layout_from_file(self,graphml_file:str) -> nx.DiGraph:
+        return nx.read_graphml(graphml_file)
         
     def create_dungeon_folder(self):
         time = datetime.now().strftime("%Y%m%d-%H%M%S")       
@@ -34,7 +33,7 @@ class WizarDDungeon():
         plt.savefig(file_path) 
         nx.write_graphml(graph, os.path.join(path,f"{fig_name}.graphml"))        
         
-    def create_dungeon(self) -> nx.DiGraph:
+    def initiate_dungeon(self) -> nx.DiGraph:
         self.dungeon_folder = self.create_dungeon_folder()
         graph = nx.DiGraph()
         graph.add_node("EN:1", type="initial_room")
@@ -91,30 +90,104 @@ class WizarDDungeon():
                 lvls.append(current_lvl)
                 current_lvl = []
                 next_queue = []
-        return lvls                 
-            
-    ################################
-    ##### DUNGEON CREATION LOOP ####
-    def creation_loop(self) -> nx.DiGraph:
+        return lvls             
+    
+    def layout_loop(self, max_room_iter:int=15,room_dice:list[int]=[2,2]) -> nx.DiGraph:
+        """_Creates the dungeon layout of rooms_
+
+        Args:
+            max_room_iter (int, optional): _iterations number of room creation loop_. Defaults to 15.
+            room_dice (list[int], optional): _[diceRolls,diceSide]_. Defaults to [2,2].
+
+        Returns:
+            nx.DiGraph: _layout graph_
+        """
         # creates root node
-        self.dungeon = self.create_dungeon()  
+        dungeon = self.initiate_dungeon()  
         
         #apply first rule to initial node
-        start_dungeon = self.grammar.apply_rule(target_hook="EN:1",graph=self.dungeon,rule=self.grammar.rules[0])
+        start_dungeon = self.grammar.apply_rule(target_hook="EN:1",graph=dungeon,rule=self.grammar.rules[0])
         self.save_dg_fig(fig_name="iter 1",graph=start_dungeon)
                 
         #dungeon rooms loop
         #---apply rule 1 a number of times for all nodes in graph:
-        times = self.dice_roller(rolls=2, sides=2)
-        self.dungeon = self.dungeon_rooms_loop(iterations=times, dungeon=start_dungeon, max_iterations=15)
-        self.save_dg_fig(fig_name="final_dungeon",graph=self.dungeon, path=self.dungeon_folder)
-        return self.dungeon
+        times = self.dice_roller(rolls=room_dice[0], sides=room_dice[1])
+        dungeon = self.dungeon_rooms_loop(iterations=times, dungeon=start_dungeon, max_iterations=max_room_iter)
+        self.save_dg_fig(fig_name="final_dungeon",graph=dungeon, path=self.dungeon_folder)        
+        return dungeon        
+                        
+    def chose_exit(self, graph:nx.DiGraph, start_lvl:int=0) -> str:
+        """_Choses an exit for the dungeon based on a given minimum lvl of the tree_
+
+        Args:
+            graph (nx.DiGraph): _dungeon graph_
+            start_lvl (int, optional): _minimum tree lvl, starting from 0_. Defaults to 3.
+            
+        Returns:
+            : _transformed graph with exit node_
+        """
+        lvls = self.bfs(graph=graph)
+        options = []
+        for sublist in lvls[start_lvl:]:
+            options.extend(sublist)
+        graph.add_node("EX:1", type="room", isHook=bool("true"))
+        graph.add_edge(rd.choice(options),"EX:1",type="connection",status="locked")
+        return graph                    
+    
+    def mission_graph(self, layout:nx.DiGraph) -> list[nx.DiGraph]:
+        """Creates the mission graph, given the layou graph with an exit.
+
+        Args:
+            layout (nx.DiGraph): layout graph with an "EX" node.
+
+        Returns:
+            list[nx.DiGraph]: 
+                [0]: modified layout graph
+                [1]: mission graph
+        """
+        mission_graph = nx.DiGraph()
+        mission_graph.add_node("EX:1", type="room", isHook=bool("true"))
+        #Apply mission grammar rule
+        #To apply mission grammar rule, need to have available nodes to check
+        #Build 
         
+        
+    
+        
+        
+    ################################
+    ##### DUNGEON CREATION LOOP ####
+    #TODO: NEED TO MAKE A COLOR MAP FOR THE GRAPH BASED ON NODE AND EDGE TYPES
+    #TODO: RED FOR LOCKED EDGES, GREEN FOR FREE ONES
+    #TODO: RED FOR LOCKED NODES, GREEN FOR FREE ONES
+    def create_dungeon(self, layout_address:str = "None") -> nx.DiGraph:
+        """_Creates the wizzard tower_
+
+        Args:
+            layout (nx.DiGraph, optional): A layout may be given, if not it creates one. Defaults to nx.DiGraph.
+
+        Returns:
+            nx.DiGraph: _wizard tower_
+        """
+        if layout_address=="None": 
+            layout = self.layout_loop(max_room_iter=15,room_dice=[2,2])  
+        else:
+            layout = self.read_layout_from_file(graphml_file=layout_address)
+            
+        self.dungeon_lvls = self.bfs(graph=layout)
+        layout = self.chose_exit(graph=layout, start_lvl=0) 
+        
+        #check progress
+        self.grammar.draw_graph([["Dungeon",layout]])       
+        
+    
+
         
         
 
 if __name__ == "__main__":
     dungeon = WizarDDungeon(grammar_file="graph_productions.json")
-    dungeon.read_dg_from_file(graphml_file="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/TOWER_20240401-145817/final_dungeon.graphml")
-    dungeon.bfs(dungeon.dungeon)
+    dungeon.create_dungeon(layout_address="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/TOWER_20240402-175302/final_dungeon.graphml")
+    
+
     

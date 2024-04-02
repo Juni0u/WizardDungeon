@@ -31,6 +31,15 @@
             {"source":"EN:1", "target":"R:1", "type":"connection", "status":"free"},
             {"source":"EN:1", "target":"R:2", "type":"connection", "status":"free"}
           ]
+        },
+        {
+          "nodes": [
+            {"id": "EN:1", "type": "room", "isHook":true},
+            {"id": "R:1", "type": "room", "isHook":false}
+          ],
+          "edges": [
+            {"source":"EN:1", "target":"R:1", "type":"connection", "status":"free"}
+          ]
         }
       ]
     }
