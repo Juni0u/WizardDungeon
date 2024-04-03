@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d3" for="edge" attr.name="status" attr.type="string"/>
+<key id="d2" for="edge" attr.name="type" attr.type="string"/>
+<key id="d1" for="node" attr.name="isHook" attr.type="boolean"/>
+<key id="d0" for="node" attr.name="type" attr.type="string"/>
+<graph edgedefault="directed"><node id="EN:1">
+  <data key="d0">room</data>
+  <data key="d1">True</data>
+</node>
+<node id="R:1">
+  <data key="d0">room</data>
+  <data key="d1">True</data>
+</node>
+<node id="R:2">
+  <data key="d0">room</data>
+  <data key="d1">True</data>
+</node>
+<node id="R:3">
+  <data key="d0">room</data>
+  <data key="d1">True</data>
+</node>
+<node id="R:5">
+  <data key="d0">room</data>
+  <data key="d1">False</data>
+</node>
+<node id="R:6">
+  <data key="d0">room</data>
+  <data key="d1">False</data>
+</node>
+<node id="R:4">
+  <data key="d0">room</data>
+  <data key="d1">True</data>
+</node>
+<node id="R:7">
+  <data key="d0">room</data>
+  <data key="d1">False</data>
+</node>
+<edge source="EN:1" target="R:1">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+<edge source="EN:1" target="R:2">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+<edge source="EN:1" target="R:3">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+<edge source="R:1" target="R:4">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+<edge source="R:3" target="R:5">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+<edge source="R:3" target="R:6">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+<edge source="R:4" target="R:7">
+  <data key="d2">connection</data>
+  <data key="d3">free</data>
+</edge>
+</graph></graphml>

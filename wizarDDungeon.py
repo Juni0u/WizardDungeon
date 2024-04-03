@@ -13,6 +13,20 @@ class WizarDDungeon():
         
     def read_layout_from_file(self,graphml_file:str) -> nx.DiGraph:
         return nx.read_graphml(graphml_file)
+    
+    def color_map(self, graph:nx.DiGraph) -> nx.DiGraph:
+        """Addes atribute "color" for each node based on its type.
+
+        Args:
+            graph (nx.DiGraph): graph to be transformed
+
+        Returns:
+            nx.DiGraph: graph where "color" attribute for each node
+        """
+
+        for edge in graph.edges():
+            print(edge)
+            print(graph.edges[edge])
         
     def create_dungeon_folder(self):
         time = datetime.now().strftime("%Y%m%d-%H%M%S")       
@@ -132,7 +146,7 @@ class WizarDDungeon():
             options.extend(sublist)
         graph.add_node("EX:1", type="room", isHook=bool("true"))
         graph.add_edge(rd.choice(options),"EX:1",type="connection",status="locked")
-        return graph                    
+        return graph                
     
     def mission_graph(self, layout:nx.DiGraph) -> list[nx.DiGraph]:
         """Creates the mission graph, given the layou graph with an exit.
@@ -147,6 +161,7 @@ class WizarDDungeon():
         """
         mission_graph = nx.DiGraph()
         mission_graph.add_node("EX:1", type="room", isHook=bool("true"))
+        
         #Apply mission grammar rule
         #To apply mission grammar rule, need to have available nodes to check
         #Build 
@@ -174,10 +189,10 @@ class WizarDDungeon():
         else:
             layout = self.read_layout_from_file(graphml_file=layout_address)
             
-        self.dungeon_lvls = self.bfs(graph=layout)
         layout = self.chose_exit(graph=layout, start_lvl=0) 
         
         #check progress
+        self.color_map(layout)
         self.grammar.draw_graph([["Dungeon",layout]])       
         
     
@@ -187,7 +202,6 @@ class WizarDDungeon():
 
 if __name__ == "__main__":
     dungeon = WizarDDungeon(grammar_file="graph_productions.json")
-    dungeon.create_dungeon(layout_address="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/TOWER_20240402-175302/final_dungeon.graphml")
-    
-
+    dungeon.create_dungeon(layout_address="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/TOWER_20240403-174325/final_dungeon.graphml")
+    #dungeon.create_dungeon()
     

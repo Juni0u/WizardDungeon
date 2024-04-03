@@ -83,10 +83,12 @@ class GraphGrammar():
         if not rule.rule_correspondence(graph): 
             return graph #No rule correspondence, returns the same graph
         
-        #Save all target_hook's neighbors
-        pre_neighbors = list(graph.predecessors(target_hook))
-        suc_neighbors = list(graph.successors(target_hook))   
-        
+        #save hook's current edges
+        hook_edges = []
+        for source, target, atributes in graph.edges(data=True):
+            if (source==target_hook) or (target==target_hook):
+                hook_edges.append((source,target,atributes))
+                
         #Get production from right_side of the rule
         production = rule.right_side[rd.randint(0,len(rule.right_side)-1)] # select a random production from the right side of the rule #TODO: Use probabilities later
         
@@ -124,20 +126,20 @@ class GraphGrammar():
         production = nx.relabel_nodes(production, rename_dict)
         
         #removing hook from graph
-        mod_graph = graph.copy()
+        mod_graph = graph.copy()        
         mod_graph.remove_node(target_hook)
         
         #add production to graph
-        mod_graph.add_nodes_from(production.nodes)
-        mod_graph.add_edges_from(production.edges)
+        for node, atributes in production.nodes(data=True):
+            mod_graph.add_node(node, **atributes)
+            
+        for source, target, atributes in production.edges(data=True):
+            mod_graph.add_edge(source, target, **atributes)
         
         #add edges that were linked to hook of old graph
-        if len(suc_neighbors) > 0:
-            for node in suc_neighbors:
-                mod_graph.add_edge(target_hook,node)
-        if len(pre_neighbors) > 0:
-            for node in pre_neighbors:
-                mod_graph.add_edge(node,target_hook) 
+        if len(hook_edges) > 0:
+            for edge in hook_edges:
+                mod_graph.add_edge(edge[0], edge[1], **edge[2])
                 
         return mod_graph        
 
@@ -167,7 +169,14 @@ def exemple_graph(opt,node_number=0):
 
 def demo():
     grammar = GraphGrammar(file_name="graph_productions.json")
-    #grammar.draw_rules()
+    graph = exemple_graph(opt="t")
+    graph2 = grammar.apply_rule("R:1",graph,grammar.rules[1])
+    #grammar.draw_graph([["teste",graph],["regra1",graph2]])
+    
+    for edge in graph2.edges():
+        print(edge)
+        print(graph2.edges[edge])
+    
     print("==========OUTPUT==========")
 
 if __name__ == "__main__":
