@@ -24,22 +24,29 @@ class GraphGrammar():
         """
         for _, graph in enumerate(graphs):
             #pos = nx.kamada_kawai_layout(graph[1])
-            plt.close()
             plt.figure(graph[0])
             pos = nx.planar_layout(graph[1])
-            nx.draw(G=graph[1],pos=pos, with_labels=True, node_color="red", node_size=500)
+            nx.draw_networkx_nodes(G=graph[1],pos=pos,
+                    linewidths= 2,
+                    edgecolors= "black",
+                    node_color=[graph[1].nodes[node]["color"] for node in graph[1].nodes], 
+                    node_size=500)
+            nx.draw_networkx_edges(G=graph[1],pos=pos, width=1.5,
+                                   edge_color=[graph[1].edges[edge]["color"] for edge in graph[1].edges])
+            
         plt.show()        
         
     def draw_rules(self):
         for i,rule in enumerate(self.rules):
             fig, axs = plt.subplots(1,len(rule.right_side)+1, figsize=(10,10))
-            axs[0] = nx.draw(G=rule.left_side, with_labels=True, node_color="red", node_size=500, ax=axs[0])
+            axs[0] = nx.draw(G=rule.left_side, with_labels=True, node_color="#828282", node_size=500, ax=axs[0])
             for j,rs in enumerate(rule.right_side):
-                axs[j+1] = nx.draw(G=rs, with_labels=True, node_color="red", node_size=500, ax=axs[j+1])
+                axs[j+1] = nx.draw(G=rs, with_labels=True, 
+                                   node_color="#828282", 
+                                   node_size=500, ax=axs[j+1])
             fig.tight_layout()
             path = os.path.join("imgs", f"rule{i}.png")
             plt.savefig(path)
-
     
     def create_graph(self, graph_data:dict):
         graph = nx.DiGraph()

@@ -14,8 +14,8 @@ class WizarDDungeon():
     def read_layout_from_file(self,graphml_file:str) -> nx.DiGraph:
         return nx.read_graphml(graphml_file)
     
-    def color_map(self, graph:nx.DiGraph) -> nx.DiGraph:
-        """Addes atribute "color" for each node based on its type.
+    def fill_color_map(self, graph:nx.DiGraph) -> nx.DiGraph:
+        """Adds atribute "color" for each node based on its type.
 
         Args:
             graph (nx.DiGraph): graph to be transformed
@@ -23,11 +23,22 @@ class WizarDDungeon():
         Returns:
             nx.DiGraph: graph where "color" attribute for each node
         """
-
         for edge in graph.edges():
-            print(edge)
-            print(graph.edges[edge])
-        
+            if graph.edges[edge]["status"] == "locked": 
+                graph.edges[edge]["color"] = "red"
+            else:  
+                graph.edges[edge]["color"] = "black" 
+
+
+        for node in graph.nodes():
+            if "EN" in node:
+                graph.nodes[node]["color"] = "cyan"
+            elif "EX" in node:
+                graph.nodes[node]["color"] = "green"
+            else:
+                graph.nodes[node]["color"] = "white"
+        return graph
+
     def create_dungeon_folder(self):
         time = datetime.now().strftime("%Y%m%d-%H%M%S")       
         folder_name = f"TOWER_{time}"
@@ -159,6 +170,7 @@ class WizarDDungeon():
                 [0]: modified layout graph
                 [1]: mission graph
         """
+        dungeon = layout
         mission_graph = nx.DiGraph()
         mission_graph.add_node("EX:1", type="room", isHook=bool("true"))
         
@@ -166,6 +178,7 @@ class WizarDDungeon():
         #To apply mission grammar rule, need to have available nodes to check
         #Build 
         
+        return [dungeon, mission_graph]
         
     
         
@@ -190,10 +203,13 @@ class WizarDDungeon():
             layout = self.read_layout_from_file(graphml_file=layout_address)
             
         layout = self.chose_exit(graph=layout, start_lvl=0) 
+        dungeon, mission_graph = self.mission_graph(layout=layout)
         
         #check progress
-        self.color_map(layout)
-        self.grammar.draw_graph([["Dungeon",layout]])       
+        layout = self.fill_color_map(graph=layout)
+        mission_graph = self.fill_color_map(graph=mission_graph)
+        dungeon = self.fill_color_map(graph=dungeon)
+        self.grammar.draw_graph([["Layout",layout],["Mission",mission_graph],["Dungeon",dungeon]])       
         
     
 
@@ -202,6 +218,6 @@ class WizarDDungeon():
 
 if __name__ == "__main__":
     dungeon = WizarDDungeon(grammar_file="graph_productions.json")
-    dungeon.create_dungeon(layout_address="/home/nonato/GitRepository/WizardDungeon/TowerUniverse/TOWER_20240403-174325/final_dungeon.graphml")
+    dungeon.create_dungeon(layout_address="TowerUniverse/TOWER_20240403-174325/final_dungeon.graphml")
     #dungeon.create_dungeon()
     
