@@ -33,6 +33,7 @@ class GraphGrammar():
                     node_size=500)
             nx.draw_networkx_edges(G=graph[1],pos=pos, width=1.5,
                                    edge_color=[graph[1].edges[edge]["color"] for edge in graph[1].edges])
+            nx.draw_networkx_labels(G=graph[1],pos=pos,font_size=8)
             
         plt.show()        
         

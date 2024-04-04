@@ -24,7 +24,7 @@ class WizarDDungeon():
             nx.DiGraph: graph where "color" attribute for each node
         """
         for edge in graph.edges():
-            if graph.edges[edge]["status"] == "locked": 
+            if (graph.edges[edge]["type"]=="connection")and(graph.edges[edge]["status"] == "locked"): 
                 graph.edges[edge]["color"] = "red"
             else:  
                 graph.edges[edge]["color"] = "black" 
@@ -170,9 +170,25 @@ class WizarDDungeon():
                 [0]: modified layout graph
                 [1]: mission graph
         """
-        dungeon = layout
+        dungeon = layout.copy()
         mission_graph = nx.DiGraph()
         mission_graph.add_node("EX:1", type="room", isHook=bool("true"))
+        ########################
+        # Mission loop -> Always verify is rule is applicable by checking dungeon layout
+        #----- Apply first rule to Exit
+        mission_graph = self.grammar.apply_rule(target_hook="EX:1",graph=mission_graph,rule=self.grammar.rules[2])
+
+        #loop pra tirar todos os puzzles que ainda existirem
+
+
+
+
+    
+
+
+
+
+
         
         #Apply mission grammar rule
         #To apply mission grammar rule, need to have available nodes to check

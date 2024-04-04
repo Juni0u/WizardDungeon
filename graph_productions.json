@@ -103,7 +103,7 @@
             {"id": "LL:1", "type": "linear_lock", "isHook":false}
           ],
           "edges": [
-            {"source":"LL:1", "target":"EX:1"}
+            {"source":"LL:1", "target":"EX:1", "type":"next_step"}
           ]
         },
         {
@@ -112,7 +112,7 @@
             {"id": "PL:1", "type": "paralel_lock", "isHook":false}
           ],
           "edges": [
-            {"source":"PL:1", "target":"EX:1"}
+            {"source":"PL:1", "target":"EX:1", "type":"next_step"}
           ]
         }
       ]
@@ -135,8 +135,8 @@
             {"id": "C:1", "type": "content", "isHook":false}
           ],
           "edges": [
-            {"source":"C:1", "target":"K:1"},
-            {"source":"K:1", "target":"L:1"}
+            {"source":"C:1", "target":"K:1", "type":"next_step"},
+            {"source":"K:1", "target":"L:1", "type":"next_step"}
           ]
         }
       ]
@@ -161,10 +161,10 @@
             {"id": "C:2", "type": "content", "isHook":false}
           ],
           "edges": [
-            {"source":"C:2", "target":"K:2"},
-            {"source":"K:2", "target":"L:1"},
-            {"source":"C:1", "target":"K:1"},
-            {"source":"K:1", "target":"L:1"}
+            {"source":"C:2", "target":"K:2", "type":"next_step"},
+            {"source":"K:2", "target":"L:1", "type":"next_step"},
+            {"source":"C:1", "target":"K:1", "type":"next_step"},
+            {"source":"K:1", "target":"L:1", "type":"next_step"}
           ]
         }
       ]
@@ -195,7 +195,7 @@
             {"id": "LL:1", "type": "linear_lock", "isHook":false}
           ],
           "edges": [
-            {"source":"LL:1", "target":"C:1"}
+            {"source":"LL:1", "target":"C:1", "type":"next_step"}
           ]
         },
         {
@@ -204,23 +204,26 @@
             {"id": "PL:1", "type": "paralel_lock", "isHook":false}
           ],
           "edges": [
-            {"source":"PL:1", "target":"C:1"}
+            {"source":"PL:1", "target":"C:1", "type":"next_step"}
           ]
         },
         {
           "nodes": [
             {"id": "C:1", "type": "content", "isHook":true},
-            {"id": "T:1", "type": "content", "isHook":false}
+            {"id": "T:1", "type": "test", "isHook":false}
           ],
           "edges": [
-            {"source":"T:1", "target":"C:1"}
+            {"source":"T:1", "target":"C:1", "type":"next_step"}
           ]
         },
         {
           "nodes": [
-            {"id": "C:1", "type": "content", "isHook":true}
+            {"id": "C:1", "type": "content", "isHook":true},
+            {"id": "Lr:1", "type": "lore", "isHook":false}
           ],
-          "edges": [ ]
+          "edges": [ 
+            {"source":"C:1", "target":"Lr:1", "type":"next_step"}
+          ]
         }
       ]
     }
